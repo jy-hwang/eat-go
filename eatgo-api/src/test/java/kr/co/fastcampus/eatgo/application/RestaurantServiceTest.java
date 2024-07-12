@@ -1,29 +1,55 @@
 package kr.co.fastcampus.eatgo.application;
 
-import kr.co.fastcampus.eatgo.domain.*;
+import kr.co.fastcampus.eatgo.domain.MenuItem;
+import kr.co.fastcampus.eatgo.domain.MenuItemRepository;
+import kr.co.fastcampus.eatgo.domain.Restaurant;
+import kr.co.fastcampus.eatgo.domain.RestaurantRepository;
 import kr.co.fastcampus.eatgo.util.LoggingTestWatcher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.BDDMockito.given;
 
 @ExtendWith(LoggingTestWatcher.class)
 public class RestaurantServiceTest {
 
     private RestaurantService restaurantService;
+    @Mock
     private RestaurantRepository restaurantRepository;
+    @Mock
     private MenuItemRepository menuItemRepository;
 
     @BeforeEach
     public void setUp() {
-        restaurantRepository = new RestaurantRepositoryImpl();
-        menuItemRepository = new MenuItemRepositoryImpl();
+        MockitoAnnotations.initMocks(this); //TODO:이건 나중에 변경해보자.
+        mockRestaurantRepository();
+        mockMenuItemRepository();
         restaurantService = new RestaurantService(restaurantRepository, menuItemRepository);
+    }
+
+    private void mockMenuItemRepository() {
+        List<MenuItem> menuItems = new ArrayList<>();
+        menuItems.add(new MenuItem("Kimchi"));
+        given(menuItemRepository.findAllByRestaurantId(1004L)).willReturn(menuItems);
+    }
+
+    private void mockRestaurantRepository() {
+        List<Restaurant> restaurants = new ArrayList<>();
+        Restaurant restaurant1 = new Restaurant(1004L, "Bob zip", "Seoul");
+
+        restaurants.add(restaurant1);
+        given(restaurantRepository.findAll()).willReturn(restaurants);
+        given(restaurantRepository.findById(1004L)).willReturn(restaurant1);
     }
 
     @Test
