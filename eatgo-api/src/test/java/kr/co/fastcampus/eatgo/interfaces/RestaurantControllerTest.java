@@ -1,8 +1,11 @@
 package kr.co.fastcampus.eatgo.interfaces;
 
+import kr.co.fastcampus.eatgo.domain.RestaurantRepository;
+import kr.co.fastcampus.eatgo.domain.RestaurantRepositoryImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.core.StringContains.containsString;
@@ -13,8 +16,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(RestaurantController.class)
 public class RestaurantControllerTest {
 
-    @Autowired
+    @Autowired // 테스트 관련 객체에 대해서는 Spring이 특별히 허용하고 있음.
     private MockMvc mvc;
+
+    @SpyBean(RestaurantRepositoryImpl.class)
+    private RestaurantRepository restaurantRepository;
 
     @Test
     public void list() throws Exception {
