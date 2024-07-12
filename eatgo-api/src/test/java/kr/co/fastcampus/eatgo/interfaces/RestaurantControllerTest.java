@@ -1,5 +1,6 @@
 package kr.co.fastcampus.eatgo.interfaces;
 
+import kr.co.fastcampus.eatgo.application.RestaurantService;
 import kr.co.fastcampus.eatgo.domain.MenuItemRepository;
 import kr.co.fastcampus.eatgo.domain.MenuItemRepositoryImpl;
 import kr.co.fastcampus.eatgo.domain.RestaurantRepository;
@@ -22,8 +23,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(RestaurantController.class)
 public class RestaurantControllerTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(RestaurantControllerTest.class);
-
     @Autowired // 테스트 관련 객체에 대해서는 Spring이 특별히 허용하고 있음.
     private MockMvc mvc;
 
@@ -32,6 +31,9 @@ public class RestaurantControllerTest {
 
     @SpyBean(MenuItemRepositoryImpl.class)
     private MenuItemRepository menuItemRepository;
+
+    @SpyBean(RestaurantService.class)
+    private RestaurantService restaurantService;
 
     @Test
     @DisplayName("list test")
