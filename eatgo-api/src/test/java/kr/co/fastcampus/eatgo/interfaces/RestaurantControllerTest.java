@@ -4,9 +4,10 @@ import kr.co.fastcampus.eatgo.domain.MenuItemRepository;
 import kr.co.fastcampus.eatgo.domain.MenuItemRepositoryImpl;
 import kr.co.fastcampus.eatgo.domain.RestaurantRepository;
 import kr.co.fastcampus.eatgo.domain.RestaurantRepositoryImpl;
-import org.junit.jupiter.api.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import kr.co.fastcampus.eatgo.util.LoggingTestWatcher;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -17,6 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ExtendWith(LoggingTestWatcher.class)
 @WebMvcTest(RestaurantController.class)
 public class RestaurantControllerTest {
 
@@ -64,17 +66,6 @@ public class RestaurantControllerTest {
                 )).andExpect(content().string(
                         containsString("\"name\":\"Cyber Food\"")
                 ));
-    }
-
-
-    @AfterEach
-    void tearDown(TestInfo testInfo) {
-        logger.info("{} Test finished successfully.", testInfo.getDisplayName());
-    }
-
-    @AfterAll
-    static void afterAll() {
-        logger.info("All tests finished successfully.");
     }
 
 }
