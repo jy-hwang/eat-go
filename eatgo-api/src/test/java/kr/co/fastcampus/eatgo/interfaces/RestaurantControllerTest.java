@@ -35,7 +35,7 @@ public class RestaurantControllerTest {
     private RestaurantService restaurantService;
 
     @Test
-    @DisplayName("list test")
+    @DisplayName("가게 목록을 가져오는 테스트")
     public void list() throws Exception {
         List<Restaurant> restaurants = new ArrayList<>();
         restaurants.add(new Restaurant(1002L, "JOKER House", "Seoul"));
@@ -51,7 +51,7 @@ public class RestaurantControllerTest {
     }
 
     @Test
-    @DisplayName("detail test")
+    @DisplayName("특정 가게 하나를 가져오는 테스트")
     public void detail() throws Exception {
         Restaurant restaurant1 = new Restaurant(1004L, "JOKER House", "Seoul");
         restaurant1.addMenuItem(new MenuItem("Kimchi"));
@@ -80,7 +80,7 @@ public class RestaurantControllerTest {
 
 
     @Test
-    @DisplayName("create test")
+    @DisplayName("가게 하나를 추가하는 테스트")
     public void create() throws Exception {
         //Restaurant restaurant = new Restaurant(1234L,"BeRyong","Seoul");
 

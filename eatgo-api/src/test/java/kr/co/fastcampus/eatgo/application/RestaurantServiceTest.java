@@ -55,7 +55,7 @@ public class RestaurantServiceTest {
     }
 
     @Test
-    @DisplayName("모든 가게를 가져오는 테스트")
+    @DisplayName("가게 목록을 가져오는 테스트")
     public void getRestaurants() {
         List<Restaurant> restaurants = restaurantService.getRestaurants();
 
