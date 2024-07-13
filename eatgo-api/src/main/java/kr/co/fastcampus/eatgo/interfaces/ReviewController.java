@@ -11,7 +11,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 @RestController
-@RequestMapping("/restaurants/{restaurantId}/review")
+@RequestMapping("/restaurants/{restaurantId}/reviews")
 public class ReviewController {
 
     private final ReviewService reviewService;
@@ -25,10 +25,8 @@ public class ReviewController {
     public ResponseEntity<?> create(
             @PathVariable("restaurantId") Long restaurantId,
             @Valid @RequestBody Review resource) throws URISyntaxException {
-
-        Review review = reviewService.addReview(resource);
-
-        String url = "/restaurants/" + restaurantId + "/review/" + review.getId();
+        Review review = reviewService.addReview(restaurantId, resource);
+        String url = "/restaurants/" + restaurantId + "/reviews/" + review.getId();
         return ResponseEntity.created(new URI(url)).body("{}");
     }
 }

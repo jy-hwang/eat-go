@@ -16,8 +16,9 @@ import java.util.Optional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(LoggingTestWatcher.class)
 public class RestaurantServiceTest {
@@ -27,13 +28,16 @@ public class RestaurantServiceTest {
     private RestaurantRepository restaurantRepository;
     @Mock
     private MenuItemRepository menuItemRepository;
+    @Mock
+    private ReviewRepository reviewRepository;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this); //TODO:이건 나중에 변경해보자.
         mockRestaurantRepository();
         mockMenuItemRepository();
-        restaurantService = new RestaurantService(restaurantRepository, menuItemRepository);
+        mockReviewRepository();
+        restaurantService = new RestaurantService(restaurantRepository, menuItemRepository, reviewRepository);
     }
 
     private void mockMenuItemRepository() {
@@ -55,7 +59,17 @@ public class RestaurantServiceTest {
 
         given(restaurantRepository.findAll()).willReturn(restaurants);
         given(restaurantRepository.findById(1004L)).willReturn(Optional.of(restaurant1));
+    }
 
+    private void mockReviewRepository() {
+        List<Review> reviews = new ArrayList<>();
+        reviews.add(Review.builder()
+                .name("BeRyong")
+                .score(1.0)
+                .description("Baaaad")
+                .build());
+
+        given(reviewRepository.findAllByRestaurantId(1004L)).willReturn(reviews);
     }
 
     @Test
@@ -73,16 +87,24 @@ public class RestaurantServiceTest {
     public void getRestaurantWithExisted() {
         Restaurant restaurant = restaurantService.getRestaurant(1004L);
 
+        verify(menuItemRepository).findAllByRestaurantId(eq(1004L));
+        verify(reviewRepository).findAllByRestaurantId(eq(1004L));
+
         assertThat(restaurant.getId(), is(1004L));
 
         MenuItem menuItem = restaurant.getMenuItems().get(0);
 
         assertThat(menuItem.getName(), is("Kimchi"));
+
+        Review review = restaurant.getReviews().get(0);
+
+        assertThat(review.getDescription(),is("Baaaad"));
     }
+
     @Test
     @DisplayName("존재하지 않는 특정 가게 하나를 가져오는 테스트")
     public void getRestaurantWithNotExisted() {
-        RestaurantNotFoundException exception = assertThrows(RestaurantNotFoundException.class, () ->{
+        RestaurantNotFoundException exception = assertThrows(RestaurantNotFoundException.class, () -> {
             restaurantService.getRestaurant(404L);
         });
     }

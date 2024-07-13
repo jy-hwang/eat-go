@@ -4,6 +4,7 @@ import kr.co.fastcampus.eatgo.application.RestaurantService;
 import kr.co.fastcampus.eatgo.domain.MenuItem;
 import kr.co.fastcampus.eatgo.domain.Restaurant;
 import kr.co.fastcampus.eatgo.domain.RestaurantNotFoundException;
+import kr.co.fastcampus.eatgo.domain.Review;
 import kr.co.fastcampus.eatgo.util.LoggingTestWatcher;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -74,15 +75,17 @@ public class RestaurantControllerTest {
                 .build();
 
         restaurant1.setMenuItems(List.of(menuItem));
-        Restaurant restaurant2
-                = Restaurant.builder()
-                .id(2024L)
-                .name("Cyber Food")
-                .address("Universe")
+
+        Review review
+                = Review.builder()
+                .name("jyhwang")
+                .score(4)
+                .description("gooood!")
                 .build();
 
+        restaurant1.setReviews(List.of(review));
+
         given(restaurantService.getRestaurant(1004L)).willReturn(restaurant1);
-        given(restaurantService.getRestaurant(2024L)).willReturn(restaurant2);
 
         mvc.perform(get("/restaurants/1004"))
                 .andExpect(status().isOk())
@@ -92,14 +95,8 @@ public class RestaurantControllerTest {
                         containsString("\"name\":\"JOKER House\"")
                 )).andExpect(content().string(
                         containsString("Kimchi")
-                ));
-
-        mvc.perform(get("/restaurants/2024"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(
-                        containsString("\"id\":2024")
                 )).andExpect(content().string(
-                        containsString("\"name\":\"Cyber Food\"")
+                        containsString("gooood")
                 ));
     }
 
