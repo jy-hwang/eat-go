@@ -37,7 +37,15 @@ public class RestaurantControllerTest {
     @DisplayName("가게 목록을 가져오는 테스트")
     public void list() throws Exception {
         List<Restaurant> restaurants = new ArrayList<>();
-        restaurants.add(new Restaurant(1002L, "JOKER House", "Seoul"));
+
+        restaurants.add(
+                Restaurant.builder()
+                        .id(1002L)
+                        .name("JOKER House")
+                        .address("Seoul")
+                        .build()
+        );
+
         given(restaurantService.getRestaurants()).willReturn(restaurants);
 
         mvc.perform(get("/restaurants"))
@@ -52,9 +60,26 @@ public class RestaurantControllerTest {
     @Test
     @DisplayName("특정 가게 하나를 가져오는 테스트")
     public void detail() throws Exception {
-        Restaurant restaurant1 = new Restaurant(1004L, "JOKER House", "Seoul");
-        restaurant1.addMenuItem(new MenuItem("Kimchi"));
-        Restaurant restaurant2 = new Restaurant(2024L, "Cyber Food", "Seoul");
+        Restaurant restaurant1
+                = Restaurant.builder()
+                .id(1004L)
+                .name("JOKER House")
+                .address("Seoul")
+                .build();
+
+        MenuItem menuItem
+                = MenuItem.builder()
+                .name("Kimchi")
+                .build();
+
+        restaurant1.setMenuItems(List.of(menuItem));
+        Restaurant restaurant2
+                = Restaurant.builder()
+                .id(2024L)
+                .name("Cyber Food")
+                .address("Universe")
+                .build();
+
         given(restaurantService.getRestaurant(1004L)).willReturn(restaurant1);
         given(restaurantService.getRestaurant(2024L)).willReturn(restaurant2);
 
@@ -82,7 +107,11 @@ public class RestaurantControllerTest {
     public void create() throws Exception {
         given(restaurantService.addRestaurant(any())).will(invocation -> {
             Restaurant restaurant = invocation.getArgument(0);
-            return new Restaurant(1234L, restaurant.getName(), restaurant.getAddress());
+            return Restaurant.builder()
+                    .id(1234L)
+                    .name(restaurant.getName())
+                    .address(restaurant.getAddress())
+                    .build();
         });
 
         mvc.perform(post("/restaurants")

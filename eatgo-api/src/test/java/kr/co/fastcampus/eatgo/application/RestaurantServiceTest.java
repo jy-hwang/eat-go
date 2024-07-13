@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,15 +40,21 @@ public class RestaurantServiceTest {
 
     private void mockMenuItemRepository() {
         List<MenuItem> menuItems = new ArrayList<>();
-        menuItems.add(new MenuItem("Kimchi"));
+        menuItems.add(MenuItem.builder().name("Kimchi").build());
         given(menuItemRepository.findAllByRestaurantId(1004L)).willReturn(menuItems);
     }
 
     private void mockRestaurantRepository() {
         List<Restaurant> restaurants = new ArrayList<>();
-        Restaurant restaurant1 = new Restaurant(1004L, "Bob zip", "Seoul");
+        Restaurant restaurant1
+                = Restaurant.builder()
+                .id(1004L)
+                .name("Bob zip")
+                .address("Seoul")
+                .build();
 
         restaurants.add(restaurant1);
+
         given(restaurantRepository.findAll()).willReturn(restaurants);
         given(restaurantRepository.findById(1004L)).willReturn(Optional.of(restaurant1));
 
@@ -80,10 +85,17 @@ public class RestaurantServiceTest {
     @Test
     @DisplayName("가게 하나를 추가하는 테스트")
     public void addRestaurant() {
-        Restaurant restaurant = new Restaurant( "BeRyong","Busan");
-        Restaurant saved = new Restaurant(1234L, "BeRyong","Busan");
+        given(restaurantRepository.save(any())).will(invocation -> {
+            Restaurant restaurant = invocation.getArgument(0);
+            restaurant.setId(1234L);
+            return restaurant;
+        });
 
-        given(restaurantRepository.save(any())).willReturn(saved);
+        Restaurant restaurant
+                = Restaurant.builder()
+                .name("BeRyong")
+                .address("Busan")
+                .build();
 
         Restaurant created = restaurantService.addRestaurant(restaurant);
 
@@ -92,9 +104,14 @@ public class RestaurantServiceTest {
 
     @Test
     @DisplayName("가게 정보를 수정하는 테스트")
-    public void updateRestaurant(){
+    public void updateRestaurant() {
+        Restaurant restaurant
+                = Restaurant.builder()
+                .id(1004L)
+                .name("Bob zip")
+                .address("Busan")
+                .build();
 
-        Restaurant restaurant = new Restaurant( 1004L,"Bob zip","Seoul");
         given(restaurantRepository.findById(1004L)).willReturn(Optional.of(restaurant));
 
         restaurantService.updateRestaurant(1004L, "Sool zip", "Busan");
