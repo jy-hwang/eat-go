@@ -27,6 +27,7 @@ public class MenuItemControllerTests {
     @MockBean
     private MenuItemService menuItemService;
 
+
     @Test
     @DisplayName("메뉴를 대량으로 한꺼번에 업데이트")
     public void bulkUpdate() throws Exception {

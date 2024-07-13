@@ -13,8 +13,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -27,6 +30,24 @@ public class MenuItemServiceTests {
 
     @InjectMocks
     private MenuItemService menuItemService;
+
+    @Test
+    @DisplayName("메뉴 목록 얻기")
+    public void getMenuItems() throws Exception {
+        List<MenuItem> mockMenuItems = new ArrayList<>();
+        mockMenuItems.add(
+                MenuItem.builder()
+                        .name("Kimchi")
+                        .build());
+
+        given(menuItemRepository.findAllByRestaurantId(1004L)).willReturn(mockMenuItems);
+
+        List<MenuItem> menuItems = menuItemService.getMenuItems(1004L);
+
+        MenuItem menuItem = menuItems.get(0);
+
+        assertThat(menuItem.getName(), is("Kimchi"));
+    }
 
     @Test
     @DisplayName("대량으로 한꺼번에 메뉴 아이템 업데이트")

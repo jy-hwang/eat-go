@@ -9,16 +9,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(LoggingTestWatcher.class)
@@ -32,33 +31,16 @@ public class ReviewControllerTests {
     private ReviewService reviewService;
 
     @Test
-    @DisplayName("유효한 속성값을 가진 리뷰 작성")
-    public void createWithValidAttributes() throws Exception {
-        given(reviewService.addReview(eq(1L), any())).willReturn(
-                Review.builder()
-                        .id(123L)
-                        .name("jackie")
-                        .score(3.5)
-                        .description("good")
-                        .build()
-        );
+    @DisplayName("리뷰 조회")
+    public void list() throws Exception {
+        List<Review> reviews = new ArrayList<>();
+        reviews.add(Review.builder()
+                .description("Cool!").build());
 
-        mvc.perform(post("/restaurants/1/reviews")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\": \"jackie\",\"score\":3.5,\"description\":\"good\"}"))
-                .andExpect(status().isCreated())
-                .andExpect(header().string("location", "/restaurants/1/reviews/123"));
-        verify(reviewService).addReview(eq(1L), any());
+        given(reviewService.getReviews()).willReturn(reviews);
+
+        mvc.perform(get("/reviews"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Cool!")));
     }
-
-    @Test
-    @DisplayName("유효하지 않은 속성값을 가진 리뷰 작성")
-    public void createWithInvalidAttributes() throws Exception {
-        mvc.perform(post("/restaurants/1/reviews")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{}"))
-                .andExpect(status().isBadRequest());
-        verify(reviewService, never()).addReview(eq(1L), any());
-    }
-
 }

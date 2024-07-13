@@ -1,10 +1,8 @@
 package kr.co.fastcampus.eatgo.interfaces;
 
 import kr.co.fastcampus.eatgo.application.RestaurantService;
-import kr.co.fastcampus.eatgo.domain.MenuItem;
 import kr.co.fastcampus.eatgo.domain.Restaurant;
 import kr.co.fastcampus.eatgo.domain.RestaurantNotFoundException;
-import kr.co.fastcampus.eatgo.domain.Review;
 import kr.co.fastcampus.eatgo.util.LoggingTestWatcher;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -69,22 +67,6 @@ public class RestaurantControllerTest {
                 .address("Seoul")
                 .build();
 
-        MenuItem menuItem
-                = MenuItem.builder()
-                .name("Kimchi")
-                .build();
-
-        restaurant1.setMenuItems(List.of(menuItem));
-
-        Review review
-                = Review.builder()
-                .name("jyhwang")
-                .score(4)
-                .description("gooood!")
-                .build();
-
-        restaurant1.setReviews(List.of(review));
-
         given(restaurantService.getRestaurant(1004L)).willReturn(restaurant1);
 
         mvc.perform(get("/restaurants/1004"))
@@ -93,10 +75,6 @@ public class RestaurantControllerTest {
                         containsString("\"id\":1004")
                 )).andExpect(content().string(
                         containsString("\"name\":\"JOKER House\"")
-                )).andExpect(content().string(
-                        containsString("Kimchi")
-                )).andExpect(content().string(
-                        containsString("gooood")
                 ));
     }
 

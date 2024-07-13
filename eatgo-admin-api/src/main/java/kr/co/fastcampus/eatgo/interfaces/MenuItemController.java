@@ -18,6 +18,13 @@ public class MenuItemController {
         this.menuItemService = menuItemService;
     }
 
+    @GetMapping
+    public List<MenuItem> list(@PathVariable Long restaurantId) {
+        List<MenuItem> menuItems = menuItemService.getMenuItems(restaurantId);
+
+        return menuItems;
+    }
+
     @PatchMapping
     public String bulkUpdate(
             @PathVariable("restaurantId") Long restaurantId,

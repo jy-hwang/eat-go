@@ -10,8 +10,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.mockito.BDDMockito.given;
 
 @ExtendWith(LoggingTestWatcher.class)
 @ExtendWith(MockitoExtension.class)
@@ -24,23 +28,24 @@ public class ReviewServiceTests {
     private ReviewService reviewService;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         reviewService = new ReviewService(reviewRepository);
     }
 
     @Test
-    @DisplayName("리뷰 작성 테스트")
-    public void addReview() {
-        Review review
-                = Review.builder()
-                .name("jyhwang")
-                .score(4.0)
-                .description("goood")
-                .build();
+    @DisplayName("리뷰 조회 테스트")
+    public void getReviews() {
+        List<Review> mockReviews = new ArrayList<>();
 
-        reviewService.addReview(1004L, review);
+        mockReviews.add(Review.builder().description("Cool!").build());
 
-        verify(reviewRepository).save(any());
+        given(reviewRepository.findAll()).willReturn(mockReviews);
+
+        List<Review> reviews = reviewService.getReviews();
+
+        Review review = reviews.get(0);
+
+        assertThat(review.getDescription(), is("Cool!"));
     }
 
 }

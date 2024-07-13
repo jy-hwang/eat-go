@@ -1,17 +1,16 @@
 package kr.co.fastcampus.eatgo.interfaces;
 
-import jakarta.validation.Valid;
 import kr.co.fastcampus.eatgo.application.ReviewService;
 import kr.co.fastcampus.eatgo.domain.Review;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.util.List;
 
 @RestController
-@RequestMapping("/restaurants/{restaurantId}/reviews")
+@RequestMapping("/reviews")
 public class ReviewController {
 
     private final ReviewService reviewService;
@@ -21,12 +20,10 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
-    @PostMapping
-    public ResponseEntity<?> create(
-            @PathVariable("restaurantId") Long restaurantId,
-            @Valid @RequestBody Review resource) throws URISyntaxException {
-        Review review = reviewService.addReview(restaurantId, resource);
-        String url = "/restaurants/" + restaurantId + "/reviews/" + review.getId();
-        return ResponseEntity.created(new URI(url)).body("{}");
+    @GetMapping
+    public List<Review> list() {
+        List<Review> reviews = reviewService.getReviews();
+        return reviews;
     }
+
 }
