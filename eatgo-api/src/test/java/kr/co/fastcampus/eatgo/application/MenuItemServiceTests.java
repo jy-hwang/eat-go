@@ -2,6 +2,7 @@ package kr.co.fastcampus.eatgo.application;
 
 import kr.co.fastcampus.eatgo.domain.MenuItem;
 import kr.co.fastcampus.eatgo.domain.MenuItemRepository;
+import kr.co.fastcampus.eatgo.util.LoggingTestWatcher;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +18,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+@ExtendWith(LoggingTestWatcher.class)
 @ExtendWith(MockitoExtension.class)
 public class MenuItemServiceTests {
 
