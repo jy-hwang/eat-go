@@ -8,7 +8,6 @@ import java.util.List;
 @Component
 public class RestaurantRepositoryImpl implements RestaurantRepository {
 
-
     private List<Restaurant> restaurants = new ArrayList<>();
 
     public RestaurantRepositoryImpl() {
@@ -28,4 +27,13 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
                 .findFirst()
                 .orElse(null);
     }
+
+    @Override
+    public Restaurant save(Restaurant restaurant) {
+        restaurant.setId(1234L);
+        restaurants.add(restaurant);
+        return restaurant;
+    }
+
+
 }

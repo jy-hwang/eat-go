@@ -23,13 +23,12 @@ public class RestaurantService {
     }
 
     public List<Restaurant> getRestaurants() {
-    List<Restaurant> restaurants = restaurantRepository.findAll();
+        List<Restaurant> restaurants = restaurantRepository.findAll();
         return restaurants;
     }
 
     public Restaurant getRestaurant(Long id) {
         Restaurant restaurant = restaurantRepository.findById(id);
-
 
         List<MenuItem> menuItems = menuItemRepository.findAllByRestaurantId(id);
 
@@ -38,7 +37,7 @@ public class RestaurantService {
         return restaurant;
     }
 
-    public void addRestaurant(Restaurant restaurant) {
-        //
+    public Restaurant addRestaurant(Restaurant restaurant) {
+        return restaurantRepository.save(restaurant);
     }
 }
