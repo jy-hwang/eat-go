@@ -1,5 +1,6 @@
 package kr.co.fastcampus.eatgo.application;
 
+import jakarta.transaction.Transactional;
 import kr.co.fastcampus.eatgo.domain.MenuItem;
 import kr.co.fastcampus.eatgo.domain.MenuItemRepository;
 import kr.co.fastcampus.eatgo.domain.Restaurant;
@@ -39,5 +40,12 @@ public class RestaurantService {
 
     public Restaurant addRestaurant(Restaurant restaurant) {
         return restaurantRepository.save(restaurant);
+    }
+
+    @Transactional
+    public Restaurant updateRestaurant(long id, String name, String address) {
+        Restaurant restaurant = restaurantRepository.findById(id).orElse(null);
+        restaurant.updateInformation(name, address);
+        return restaurant;
     }
 }

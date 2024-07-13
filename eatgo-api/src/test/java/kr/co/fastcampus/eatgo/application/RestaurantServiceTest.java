@@ -76,10 +76,10 @@ public class RestaurantServiceTest {
 
         assertThat(menuItem.getName(), is("Kimchi"));
     }
+
     @Test
     @DisplayName("가게 하나를 추가하는 테스트")
     public void addRestaurant() {
-        //1234L,
         Restaurant restaurant = new Restaurant( "BeRyong","Busan");
         Restaurant saved = new Restaurant(1234L, "BeRyong","Busan");
 
@@ -88,5 +88,18 @@ public class RestaurantServiceTest {
         Restaurant created = restaurantService.addRestaurant(restaurant);
 
         assertThat(created.getId(), is(1234L));
+    }
+
+    @Test
+    @DisplayName("가게 정보를 수정하는 테스트")
+    public void updateRestaurant(){
+
+        Restaurant restaurant = new Restaurant( 1004L,"Bob zip","Seoul");
+        given(restaurantRepository.findById(1004L)).willReturn(Optional.of(restaurant));
+
+        restaurantService.updateRestaurant(1004L, "Sool zip", "Busan");
+
+        assertThat(restaurant.getName(), is("Sool zip"));
+        assertThat(restaurant.getAddress(), is("Busan"));
     }
 }
