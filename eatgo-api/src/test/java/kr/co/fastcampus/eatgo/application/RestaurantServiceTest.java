@@ -1,9 +1,6 @@
 package kr.co.fastcampus.eatgo.application;
 
-import kr.co.fastcampus.eatgo.domain.MenuItem;
-import kr.co.fastcampus.eatgo.domain.MenuItemRepository;
-import kr.co.fastcampus.eatgo.domain.Restaurant;
-import kr.co.fastcampus.eatgo.domain.RestaurantRepository;
+import kr.co.fastcampus.eatgo.domain.*;
 import kr.co.fastcampus.eatgo.util.LoggingTestWatcher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,6 +15,7 @@ import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -71,8 +69,8 @@ public class RestaurantServiceTest {
     }
 
     @Test
-    @DisplayName("특정 가게 하나를 가져오는 테스트")
-    public void getRestaurant() {
+    @DisplayName("존재하는 특정 가게 하나를 가져오는 테스트")
+    public void getRestaurantWithExisted() {
         Restaurant restaurant = restaurantService.getRestaurant(1004L);
 
         assertThat(restaurant.getId(), is(1004L));
@@ -80,6 +78,13 @@ public class RestaurantServiceTest {
         MenuItem menuItem = restaurant.getMenuItems().get(0);
 
         assertThat(menuItem.getName(), is("Kimchi"));
+    }
+    @Test
+    @DisplayName("존재하지 않는 특정 가게 하나를 가져오는 테스트")
+    public void getRestaurantWithNotExisted() {
+        RestaurantNotFoundException exception = assertThrows(RestaurantNotFoundException.class, () ->{
+            restaurantService.getRestaurant(404L);
+        });
     }
 
     @Test

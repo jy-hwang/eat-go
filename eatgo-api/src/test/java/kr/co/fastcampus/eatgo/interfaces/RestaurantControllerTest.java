@@ -3,6 +3,7 @@ package kr.co.fastcampus.eatgo.interfaces;
 import kr.co.fastcampus.eatgo.application.RestaurantService;
 import kr.co.fastcampus.eatgo.domain.MenuItem;
 import kr.co.fastcampus.eatgo.domain.Restaurant;
+import kr.co.fastcampus.eatgo.domain.RestaurantNotFoundException;
 import kr.co.fastcampus.eatgo.util.LoggingTestWatcher;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -58,8 +59,8 @@ public class RestaurantControllerTest {
     }
 
     @Test
-    @DisplayName("특정 가게 하나를 가져오는 테스트")
-    public void detail() throws Exception {
+    @DisplayName("존재하는 특정 가게 하나를 가져오는 테스트")
+    public void detailWithExisted() throws Exception {
         Restaurant restaurant1
                 = Restaurant.builder()
                 .id(1004L)
@@ -100,6 +101,16 @@ public class RestaurantControllerTest {
                 )).andExpect(content().string(
                         containsString("\"name\":\"Cyber Food\"")
                 ));
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 특정 가게 하나를 가져오는 테스트")
+    public void detailWithNotExisted() throws Exception {
+        given(restaurantService.getRestaurant(404L)).willThrow(new RestaurantNotFoundException(404L));
+
+        mvc.perform(get("/restaurants/404"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("{}"));
     }
 
     @Test
@@ -145,6 +156,7 @@ public class RestaurantControllerTest {
                 .andExpect(status().isOk());
         verify(restaurantService).updateRestaurant(1004L, "JOKER Bar", "Busan");
     }
+
     @Test
     @DisplayName("유효하지 않은 데이터로 가게 정보를 수정하는 테스트")
     public void updateWithInvalidData() throws Exception {
