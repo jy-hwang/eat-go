@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: eatgo-common
+
+server:
+  port: 6070

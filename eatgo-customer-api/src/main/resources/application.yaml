@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: eatgo-customer
+
+server:
+  port: 6065

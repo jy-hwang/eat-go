@@ -4,7 +4,7 @@
   "description": "EatGo Web Project",
   "main": "src/index.js",
   "scripts": {
-    "start": "webpack-dev-server --port 6070 --mode=development",
+    "start": "webpack-dev-server --port 6080 --mode=development",
     "test": "jest"
   },
   "author": "jy-hwang",
