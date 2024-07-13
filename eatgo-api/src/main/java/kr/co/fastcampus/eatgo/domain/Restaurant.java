@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Transient;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -21,8 +22,10 @@ public class Restaurant {
     @Setter
     private Long id;
 
+    @NotEmpty
     private String name;
 
+    @NotEmpty
     private String address;
 
     @Transient

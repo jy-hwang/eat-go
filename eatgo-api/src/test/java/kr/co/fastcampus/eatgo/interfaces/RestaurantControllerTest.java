@@ -103,8 +103,8 @@ public class RestaurantControllerTest {
     }
 
     @Test
-    @DisplayName("가게 하나를 추가하는 테스트")
-    public void create() throws Exception {
+    @DisplayName("유효한 데이터로 가게 하나를 추가하는 테스트")
+    public void createWithValidData() throws Exception {
         given(restaurantService.addRestaurant(any())).will(invocation -> {
             Restaurant restaurant = invocation.getArgument(0);
             return Restaurant.builder()
@@ -126,12 +126,32 @@ public class RestaurantControllerTest {
     }
 
     @Test
-    @DisplayName("가게 정보를 수정하는 테스트")
-    public void update() throws Exception {
+    @DisplayName("유효하지 않은 데이터가 입력되었을 때의 테스트")
+    public void createWithInvalidData() throws Exception {
+        mvc.perform(post("/restaurants")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"\",\"address\":\"\"}")
+                )
+                .andExpect(status().isBadRequest());
+
+    }
+
+    @Test
+    @DisplayName("유효한 데이터로 가게 정보를 수정하는 테스트")
+    public void updateWithValidData() throws Exception {
         mvc.perform(patch("/restaurants/1004")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\"JOKER Bar\",\"address\":\"Busan\"}"))
                 .andExpect(status().isOk());
         verify(restaurantService).updateRestaurant(1004L, "JOKER Bar", "Busan");
+    }
+    @Test
+    @DisplayName("유효하지 않은 데이터로 가게 정보를 수정하는 테스트")
+    public void updateWithInvalidData() throws Exception {
+        mvc.perform(patch("/restaurants/1004")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"\",\"address\":\"\"}"))
+                .andExpect(status().isBadRequest());
+
     }
 }
