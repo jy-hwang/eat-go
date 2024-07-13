@@ -82,11 +82,14 @@ public class RestaurantControllerTest {
     @Test
     @DisplayName("가게 하나를 추가하는 테스트")
     public void create() throws Exception {
-        //Restaurant restaurant = new Restaurant(1234L,"BeRyong","Seoul");
+        given(restaurantService.addRestaurant(any())).will(invocation -> {
+            Restaurant restaurant = invocation.getArgument(0);
+            return new Restaurant(1234L, restaurant.getName(), restaurant.getAddress());
+        });
 
         mvc.perform(post("/restaurants")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"Beryong\",\"address\":\"Busan\"}")
+                        .content("{\"name\":\"BeRyong\",\"address\":\"Busan\"}")
                 )
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location", "/restaurants/1234"))

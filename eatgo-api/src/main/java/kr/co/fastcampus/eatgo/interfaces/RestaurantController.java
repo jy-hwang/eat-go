@@ -44,8 +44,9 @@ public class RestaurantController {
         String name = resource.getName();
         String address = resource.getAddress();
         Restaurant restaurant = new Restaurant(name, address);
-        restaurantService.addRestaurant(restaurant);
-        URI uri = new URI("/restaurants/"+restaurant.getId());
+
+        Restaurant saved = restaurantService.addRestaurant(restaurant);
+        URI uri = new URI("/restaurants/" + saved.getId());
         return ResponseEntity.created(uri).body("{}");
     }
 }
