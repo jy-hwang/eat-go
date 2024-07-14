@@ -3,4 +3,4 @@ spring:
     name: eatgo-common
 
 server:
-  port: 6070
+  port: ${COMMON_PORT}

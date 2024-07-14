@@ -1,6 +1,19 @@
 spring:
   application:
     name: eatgo-admin
+  datasource:
+    url: ${H2_REAL_URL}
+  jpa:
+    hibernate:
+      ddl-auto: update
 
 server:
-  port: 6060
+  port: ${ADMIN_PORT}
+
+---
+spring:
+  datasource:
+    url: ${H2_TEST_URL}
+  config:
+    activate:
+      on-profile: test
