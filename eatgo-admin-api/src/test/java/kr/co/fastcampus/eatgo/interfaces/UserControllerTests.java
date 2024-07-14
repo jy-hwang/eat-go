@@ -90,4 +90,13 @@ public class UserControllerTests {
         verify(userService).updateUser(eq(id), eq(email), eq(nickname), eq(level));
     }
 
+    @Test
+    @DisplayName("사용자 삭제 : 레벨을 변경하여 black user 로 deactivate.")
+    public void deactivate() throws Exception {
+        mvc.perform(delete("/users/1004"))
+                .andExpect(status().isOk());
+
+        verify(userService).deactiveUser(1004L);
+    }
+
 }

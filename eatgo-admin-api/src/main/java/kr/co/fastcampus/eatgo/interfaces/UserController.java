@@ -20,7 +20,7 @@ public class UserController {
     @GetMapping
     public List<User> list() {
         List<User> users = userService.getUsers();
-        System.out.println("=================" + users.toString());
+
         return users;
     }
 
@@ -44,6 +44,13 @@ public class UserController {
         Long level = resource.getLevel();
 
         userService.updateUser(id, email, nickname, level);
+
+        return "{}";
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id") Long id) {
+        userService.deactiveUser(id);
 
         return "{}";
     }

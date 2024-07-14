@@ -29,6 +29,7 @@ public class UserService {
         User user = User.builder()
                 .email(email)
                 .nickname(nickname)
+                .level(1L)
                 .build();
 
         return userRepository.save(user);
@@ -41,6 +42,15 @@ public class UserService {
         user.setEmail(email);
         user.setNickname(nickname);
         user.setLevel(level);
+
+        return user;
+    }
+
+    public User deactiveUser(Long id) {
+        // TODO : 나중에 예외처리 추가해보기
+        User user = userRepository.findById(id).orElse(null);
+
+        user.deactivate();
 
         return user;
     }

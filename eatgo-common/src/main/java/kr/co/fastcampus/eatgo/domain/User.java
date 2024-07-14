@@ -3,6 +3,7 @@ package kr.co.fastcampus.eatgo.domain;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -13,6 +14,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @ToString
+@Table(name = "app_user")
 public class User {
 
     @Id
@@ -35,4 +37,11 @@ public class User {
         return level == 100L;
     }
 
+    public boolean isActive() {
+        return level > 0;
+    }
+
+    public void deactivate() {
+        level = 0L;
+    }
 }

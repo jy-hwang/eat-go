@@ -23,5 +23,11 @@ public class UserTests {
 
         assertThat(user.getNickname(), is("테스터11"));
         assertThat(user.isAdmin(), is(true));
+        assertThat(user.isActive(), is(true));
+
+        user.deactivate();
+
+        assertThat(user.isActive(), is(false));
+
     }
 }
