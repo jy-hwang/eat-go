@@ -59,7 +59,7 @@ public class RestaurantServiceTest {
 
         restaurants.add(restaurant1);
 
-        given(restaurantRepository.findAllByAddressContainingAndCategoryId("Seoul",1L)).willReturn(restaurants);
+        given(restaurantRepository.findAllByAddressContainingAndCategoryId("Seoul", 1L)).willReturn(restaurants);
         given(restaurantRepository.findById(1004L)).willReturn(Optional.of(restaurant1));
     }
 

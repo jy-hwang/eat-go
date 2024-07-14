@@ -47,7 +47,7 @@ public class RestaurantControllerTest {
                         .build()
         );
 
-        given(restaurantService.getRestaurants("Seoul",1L)).willReturn(restaurants);
+        given(restaurantService.getRestaurants("Seoul", 1L)).willReturn(restaurants);
 
         mvc.perform(get("/restaurants?region=Seoul&category=1"))
                 .andExpect(status().isOk())
