@@ -99,7 +99,7 @@ public class RestaurantServiceTest {
 
         Review review = restaurant.getReviews().get(0);
 
-        assertThat(review.getDescription(),is("Baaaad"));
+        assertThat(review.getDescription(), is("Baaaad"));
     }
 
     @Test

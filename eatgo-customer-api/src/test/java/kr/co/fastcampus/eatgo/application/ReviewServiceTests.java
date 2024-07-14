@@ -24,7 +24,7 @@ public class ReviewServiceTests {
     private ReviewService reviewService;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         reviewService = new ReviewService(reviewRepository);
     }
 
