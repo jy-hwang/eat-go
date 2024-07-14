@@ -12,7 +12,7 @@ import static org.hamcrest.core.Is.is;
 public class RegionTests {
 
     @Test
-    @DisplayName("")
+    @DisplayName("Region Creation Test")
     public void creation() {
         Region region = Region.builder().name("서울").build();
 

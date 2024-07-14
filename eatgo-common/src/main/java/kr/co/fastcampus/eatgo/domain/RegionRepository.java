@@ -8,4 +8,5 @@ public interface RegionRepository extends CrudRepository<Region, Long> {
 
     List<Region> findAll();
 
+    Region save(Region region);
 }
