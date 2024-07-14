@@ -2,7 +2,6 @@ package kr.co.fastcampus.eatgo.interfaces;
 
 import kr.co.fastcampus.eatgo.application.CategoryService;
 import kr.co.fastcampus.eatgo.domain.Category;
-import kr.co.fastcampus.eatgo.domain.Region;
 import kr.co.fastcampus.eatgo.util.LoggingTestWatcher;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
