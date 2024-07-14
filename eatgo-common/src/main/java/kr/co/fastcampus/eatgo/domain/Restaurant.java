@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -22,6 +23,9 @@ public class Restaurant {
     @GeneratedValue
     @Setter
     private Long id;
+
+    @NotNull
+    private Long categoryId;
 
     @NotEmpty
     private String name;

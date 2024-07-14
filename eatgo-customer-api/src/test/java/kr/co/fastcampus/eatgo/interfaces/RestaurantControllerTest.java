@@ -34,21 +34,22 @@ public class RestaurantControllerTest {
     private RestaurantService restaurantService;
 
     @Test
-    @DisplayName("가게 목록을 가져오는 테스트")
-    public void list() throws Exception {
+    @DisplayName("필터링 된 가게 목록을 가져오는 테스트")
+    public void listWithParam() throws Exception {
         List<Restaurant> restaurants = new ArrayList<>();
 
         restaurants.add(
                 Restaurant.builder()
                         .id(1002L)
+                        .categoryId(1L)
                         .name("JOKER House")
                         .address("Seoul")
                         .build()
         );
 
-        given(restaurantService.getRestaurants()).willReturn(restaurants);
+        given(restaurantService.getRestaurants("Seoul",1L)).willReturn(restaurants);
 
-        mvc.perform(get("/restaurants"))
+        mvc.perform(get("/restaurants?region=Seoul&category=1"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(
                         containsString("\"id\":1002")
