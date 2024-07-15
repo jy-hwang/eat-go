@@ -13,14 +13,11 @@ import java.util.Optional;
 @Transactional
 public class UserService {
 
-    private final PasswordEncoder passwordEncoder;
-    UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private UserRepository userRepository;
 
     public User registerUser(String email, String nickname, String password) {
 
@@ -40,6 +37,9 @@ public class UserService {
                 .build();
 
         return userRepository.save(user);
+    }
 
+    public User authenticate(String email, String password) {
+        return null;
     }
 }
