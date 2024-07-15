@@ -1,6 +1,5 @@
 package kr.co.fastcampus.eatgo.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -48,12 +47,4 @@ public class User {
         level = 0L;
     }
 
-    @JsonIgnore
-    public String getAccessToken() {
-        if(password == null){
-            return "";
-        }
-
-        return password.substring(0, 10);
-    }
 }

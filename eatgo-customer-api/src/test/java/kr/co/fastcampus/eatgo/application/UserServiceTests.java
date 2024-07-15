@@ -23,7 +23,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.result.StatusResultMatchersExtensionsKt.isEqualTo;
 
 @ExtendWith(LoggingTestWatcher.class)
 @ExtendWith(MockitoExtension.class)
@@ -41,8 +40,8 @@ public class UserServiceTests {
     private PasswordEncoder passwordEncoder;
 
     @BeforeEach
-    public void setup(){
-        userService = new UserService(passwordEncoder,userRepository);
+    public void setup() {
+        userService = new UserService(passwordEncoder, userRepository);
     }
 
     @Test

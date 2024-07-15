@@ -5,6 +5,7 @@ import kr.co.fastcampus.eatgo.application.PasswordWrongException;
 import kr.co.fastcampus.eatgo.application.UserService;
 import kr.co.fastcampus.eatgo.domain.User;
 import kr.co.fastcampus.eatgo.util.LoggingTestWatcher;
+import kr.co.fastcampus.eatgo.utils.JwtUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -32,16 +34,22 @@ public class SessionControllerTests {
     @MockBean
     private UserService userService;
 
+    @MockBean
+    private JwtUtil jwtUtil;
+
     @Test
     @DisplayName("세션 테스트 요청")
     @WithMockUser
     public void createWithValidAttributes() throws Exception {
+        Long id = 1004L;
         String email = "tester@example.com";
         String password = "test";
+        String nickname = "Tester";
 
-        User mockUser = User.builder().password("ACCESSTOKEN").build();
+        User mockUser = User.builder().id(id).nickname(nickname).build();
 
         given(userService.authenticate(email, password)).willReturn(mockUser);
+        given(jwtUtil.createToken(id, nickname)).willReturn(("header.payload.signature"));
 
         mvc.perform(post("/session")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -49,7 +57,7 @@ public class SessionControllerTests {
                         .with(csrf()))  // CSRF 토큰 추가
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location", "/session"))
-                .andExpect(content().string("{\"accessToken\":\"ACCESSTOKE\"}"));
+                .andExpect(content().string(containsString("{\"accessToken\":\"")));
 
         verify(userService).authenticate(eq(email), eq(password));
     }

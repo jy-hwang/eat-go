@@ -6,10 +6,15 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
 server:
   port: ${CUSTOMER_PORT}
 
+jwt:
+  secret: 12345678123456781234567812345678
 ---
 spring:
   datasource:
