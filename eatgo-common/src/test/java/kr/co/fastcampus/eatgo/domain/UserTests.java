@@ -28,6 +28,20 @@ public class UserTests {
         user.deactivate();
 
         assertThat(user.isActive(), is(false));
+    }
 
+    @Test
+    @DisplayName("비밀번호가 있는 액세스 토큰 관련 테스트")
+    public void accessTokenWithPassword(){
+        User user = User.builder().password("ACCESSTOKEN").build();
+
+        assertThat(user.getPassword(), is("ACCESSTOKEN"));
+    }
+    @Test
+    @DisplayName("비밀번호가 없는 액세스 토큰 관련 테스트")
+    public void accessTokenWithoutPassword(){
+        User user = new User();
+
+        assertThat(user.getAccessToken(), is(""));
     }
 }

@@ -3,6 +3,7 @@ package kr.co.fastcampus.eatgo.interfaces;
 import kr.co.fastcampus.eatgo.application.EmailNotExistedException;
 import kr.co.fastcampus.eatgo.application.PasswordWrongException;
 import kr.co.fastcampus.eatgo.application.UserService;
+import kr.co.fastcampus.eatgo.domain.User;
 import kr.co.fastcampus.eatgo.util.LoggingTestWatcher;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,15 +36,22 @@ public class SessionControllerTests {
     @DisplayName("세션 테스트 요청")
     @WithMockUser
     public void createWithValidAttributes() throws Exception {
+        String email = "tester@example.com";
+        String password = "test";
+
+        User mockUser = User.builder().password("ACCESSTOKEN").build();
+
+        given(userService.authenticate(email, password)).willReturn(mockUser);
+
         mvc.perform(post("/session")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"email\": \"tester@example.com\",\"password\":\"test\"}")
                         .with(csrf()))  // CSRF 토큰 추가
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location", "/session"))
-                .andExpect(content().string("{\"accessToken\":\"ACCESSTOKEN\"}"));
+                .andExpect(content().string("{\"accessToken\":\"ACCESSTOKE\"}"));
 
-        verify(userService).authenticate(eq("tester@example.com"), eq("test"));
+        verify(userService).authenticate(eq(email), eq(password));
     }
 
     @Test

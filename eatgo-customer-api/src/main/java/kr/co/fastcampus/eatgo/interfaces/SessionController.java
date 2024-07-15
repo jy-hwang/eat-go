@@ -22,12 +22,12 @@ public class SessionController {
     @PostMapping
     public ResponseEntity<SessionResonseDto> create(@RequestBody User resource) throws URISyntaxException {
         String url = "/session";
-        String accessToken = "ACCESSTOKEN";
 
         String email = resource.getEmail();
         String password = resource.getPassword();
 
-        userService.authenticate(email, password);
+        User user = userService.authenticate(email, password);
+        String accessToken = user.getAccessToken();
 
         return ResponseEntity.created(new URI(url))
                 .body(SessionResonseDto.builder()
