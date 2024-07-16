@@ -77,7 +77,7 @@ public class RestaurantControllerTest {
 
         Review review
                 = Review.builder()
-                .name("jyhwang")
+                .nickname("jyhwang")
                 .score(4)
                 .description("gooood!")
                 .build();

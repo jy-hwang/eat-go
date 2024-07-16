@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import kr.co.fastcampus.eatgo.domain.User;
 import kr.co.fastcampus.eatgo.domain.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Autowired
-    public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository) {
+    public UserService(@Lazy PasswordEncoder passwordEncoder, UserRepository userRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }

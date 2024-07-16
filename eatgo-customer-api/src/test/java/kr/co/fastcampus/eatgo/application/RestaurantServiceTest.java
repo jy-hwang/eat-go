@@ -66,7 +66,7 @@ public class RestaurantServiceTest {
     private void mockReviewRepository() {
         List<Review> reviews = new ArrayList<>();
         reviews.add(Review.builder()
-                .name("BeRyong")
+                .nickname("BeRyong")
                 .score(1.0)
                 .description("Baaaad")
                 .build());

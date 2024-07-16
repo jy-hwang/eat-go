@@ -34,21 +34,18 @@ public class ReviewControllerTests {
     @Test
     @DisplayName("유효한 속성값을 가진 리뷰 작성")
     public void createWithValidAttributes() throws Exception {
-        given(reviewService.addReview(eq(1L), any())).willReturn(
-                Review.builder()
-                        .id(123L)
-                        .name("jackie")
-                        .score(3.5)
-                        .description("good")
-                        .build()
-        );
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEwMDQsIm5pY2tuYW1lIjoiSm9obiJ9.eTVRsy7AkkWHQ-BLbrebFUiOetWAXw1aqT7ezsFm0y";
+
+        given(reviewService.addReview(1L, "John", 3.5, "good"))
+                .willReturn(Review.builder().id(1004L).build());
 
         mvc.perform(post("/restaurants/1/reviews")
+                        .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\": \"jackie\",\"score\":3.5,\"description\":\"good\"}"))
+                        .content("{\"score\":3.5,\"description\":\"good\"}"))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("location", "/restaurants/1/reviews/123"));
-        verify(reviewService).addReview(eq(1L), any());
+                .andExpect(header().string("location", "/restaurants/1/reviews/1004"));
+        verify(reviewService).addReview(eq(1L), eq("John"), eq(3.5),eq("good"));
     }
 
     @Test
@@ -58,7 +55,7 @@ public class ReviewControllerTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isBadRequest());
-        verify(reviewService, never()).addReview(eq(1L), any());
+        verify(reviewService, never()).addReview(any(),any(),any(),any());
     }
 
 }

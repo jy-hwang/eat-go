@@ -28,8 +28,7 @@ public class Review {
     @Max(5)
     private double score;
 
-    @NotEmpty
-    private String name;
+    private String nickname;
 
     @NotEmpty
     private String description;

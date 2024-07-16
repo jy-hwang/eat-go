@@ -31,14 +31,7 @@ public class ReviewServiceTests {
     @Test
     @DisplayName("리뷰 작성 테스트")
     public void addReview() {
-        Review review
-                = Review.builder()
-                .name("jyhwang")
-                .score(4.0)
-                .description("goood")
-                .build();
-
-        reviewService.addReview(1004L, review);
+        reviewService.addReview(1004L, "jyhwang", 4.0,"good");
 
         verify(reviewRepository).save(any());
     }
