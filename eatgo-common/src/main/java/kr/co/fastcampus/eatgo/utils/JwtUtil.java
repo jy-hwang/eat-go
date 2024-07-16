@@ -23,10 +23,10 @@ public class JwtUtil {
                 .compact();
     }
 
-
     public Claims getClaims(String token) {
-        return Jwts.parser()
+        return Jwts.parserBuilder()
                 .setSigningKey(key)
+                .build()
                 .parseClaimsJws(token)
                 .getBody();
     }

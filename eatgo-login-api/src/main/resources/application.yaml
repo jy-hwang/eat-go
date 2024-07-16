@@ -2,7 +2,7 @@ spring:
   main:
     allow-circular-references: true
   application:
-    name: eatgo-customer
+    name: eatgo-login
   datasource:
     url: ${H2_REAL_URL}
   jpa:
@@ -14,10 +14,7 @@ spring:
         format_sql: true
 
 server:
-  port: ${CUSTOMER_PORT}
-
-jwt:
-  secret: ${JWT_SECRET}
+  port: ${LOGIN_PORT}
 
 logging:
   level:
@@ -25,6 +22,8 @@ logging:
       sql: debug
       orm.jdbc.bind: TRACE
 
+jwt:
+  secret: ${JWT_SECRET}
 ---
 spring:
   datasource:

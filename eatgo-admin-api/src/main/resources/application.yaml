@@ -10,9 +10,15 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
 server:
   port: ${ADMIN_PORT}
 
+logging:
+  level:
+    org.hibernate:
+      sql: debug
+      orm.jdbc.bind: TRACE
 ---
 spring:
   datasource:

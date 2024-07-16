@@ -24,24 +24,13 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User registerUser(String email, String nickname, String password) {
+    public User authenticate(String email, String password) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new EmailNotExistedException(email));
 
-        Optional<User> existed = userRepository.findByEmail(email);
-
-        if (existed.isPresent()) {
-            throw new EmailExistedException(email);
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new PasswordWrongException();
         }
 
-        String encodedPassword = passwordEncoder.encode(password);
-
-        User user = User.builder()
-                .email(email)
-                .nickname(nickname)
-                .password(encodedPassword)
-                .level(1L)
-                .build();
-
-        return userRepository.save(user);
+        return user;
     }
-
 }

@@ -44,6 +44,7 @@ public class RestaurantController {
         Restaurant restaurant
                 = Restaurant.builder()
                 .name(resource.getName())
+                .categoryId(resource.getCategoryId())
                 .address(resource.getAddress())
                 .build();
 

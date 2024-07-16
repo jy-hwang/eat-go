@@ -45,33 +45,49 @@ public class UserServiceTests {
     }
 
     @Test
-    @DisplayName("사용자 회원가입 서비스")
-    @Disabled
-    public void registerUser() {
+    @DisplayName("유효한 정보로 인증처리 테스트")
+    public void authenticateWithValidAttributes() {
         String email = "tester@example.com";
-        String nickname = "tester";
         String password = "test";
+        User mockUser = User.builder().email(email).build();
 
-        userService.registerUser(email, nickname, password);
+        given(userRepository.findByEmail(email)).willReturn(Optional.of(mockUser));
+        given(passwordEncoder.matches(any(), any())).willReturn(true);
 
-        verify(userRepository).save(any());
+        User user = userService.authenticate(email, password);
+
+        assertThat(user.getEmail()).isEqualTo(email);
+    }
+
+
+    @Test
+    @DisplayName("존재하지 않는 이메일로 인증처리 테스트")
+    public void authenticateWithNotExistedEmail() {
+        String email = "x@example.com";
+        String password = "test";
+        User mockUser = User.builder().email(email).build();
+
+        given(userRepository.findByEmail(email)).willReturn(Optional.empty());
+
+        EmailNotExistedException exception = assertThrows(EmailNotExistedException.class, () -> {
+            userService.authenticate(email, password);
+        });
+
     }
 
     @Test
-    @DisplayName("존재하는 이메일인 경우 테스트")
-    public void registerUserWithExistedEmail() {
+    @DisplayName("잘못된 비밀번호로 인증처리 테스트")
+    public void authenticateWithWrongPassword() {
         String email = "tester@example.com";
-        String nickname = "tester";
-        String password = "test";
+        String password = "x";
 
-        User user = User.builder().build();
-        given(userRepository.findByEmail(email)).willReturn(Optional.of(user));
+        User mockUser = User.builder().email(email).build();
 
-        EmailExistedException exception = assertThrows(EmailExistedException.class, () -> {
-            userService.registerUser(email, nickname, password);
+        given(userRepository.findByEmail(email)).willReturn(Optional.of(mockUser));
+        given(passwordEncoder.matches(any(), any())).willReturn(false);
+
+        PasswordWrongException exception = assertThrows(PasswordWrongException.class, () -> {
+            userService.authenticate(email, password);
         });
-
-        verify(userRepository, never()).save(any());
     }
-
 }
