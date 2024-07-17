@@ -6,8 +6,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +23,10 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(LoggingTestWatcher.class)
+@ExtendWith(MockitoExtension.class)
 public class RestaurantServiceTest {
 
+    @InjectMocks
     private RestaurantService restaurantService;
     @Mock
     private RestaurantRepository restaurantRepository;
@@ -34,10 +37,9 @@ public class RestaurantServiceTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this); //TODO:이건 나중에 변경해보자.
-        mockRestaurantRepository();
-        mockMenuItemRepository();
-        mockReviewRepository();
+//        mockRestaurantRepository();
+//        mockMenuItemRepository();
+//        mockReviewRepository();
         restaurantService = new RestaurantService(restaurantRepository, menuItemRepository, reviewRepository);
     }
 
@@ -77,21 +79,33 @@ public class RestaurantServiceTest {
     @Test
     @DisplayName("가게 목록을 가져오는 테스트")
     public void getRestaurants() {
+        List<Restaurant> mockRestaurants = new ArrayList<>();
+        mockRestaurants.add(
+                Restaurant.builder()
+                        .id(1004L)
+                        .address("Seoul")
+                        .categoryId(1L)
+                        .build());
+
         String region = "Seoul";
 
-        Long categoryId = 1L;
+        long categoryId = 1L;
 
+        given(restaurantRepository.findAll()).willReturn(mockRestaurants);
+        System.out.println("======================");
+        System.out.println(mockRestaurants.get(0).getName());
         List<Restaurant> restaurants = restaurantService.getRestaurants(region, categoryId);
 
         Restaurant restaurant = restaurants.get(0);
-
+        System.out.println("======================");
+        System.out.println(restaurant.getName());
         assertThat(restaurant.getId(), is(1004L));
     }
 
     @Test
     @DisplayName("존재하는 특정 가게 하나를 가져오는 테스트")
     public void getRestaurantWithExisted() {
-        Restaurant restaurant = restaurantService.getRestaurant(1004L);
+        Restaurant restaurant = restaurantService.getRestaurant(52L);
 
         verify(menuItemRepository).findAllByRestaurantId(eq(1004L));
         verify(reviewRepository).findAllByRestaurantId(eq(1004L));

@@ -8,8 +8,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,17 +23,18 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(LoggingTestWatcher.class)
+@ExtendWith(MockitoExtension.class)
 public class RestaurantServiceTest {
 
+    @InjectMocks
     private RestaurantService restaurantService;
+
     @Mock
     private RestaurantRepository restaurantRepository;
 
-
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this); //TODO:이건 나중에 변경해보자.
-        mockRestaurantRepository();
+//        mockRestaurantRepository();
         restaurantService = new RestaurantService(restaurantRepository);
     }
 
@@ -59,15 +61,15 @@ public class RestaurantServiceTest {
 
         Restaurant restaurant = restaurants.get(0);
 
-        assertThat(restaurant.getId(), is(1004L));
+        assertThat(restaurant.getId(), is(52));
     }
 
     @Test
     @DisplayName("존재하는 특정 가게 하나를 가져오는 테스트")
     public void getRestaurantWithExisted() {
-        Restaurant restaurant = restaurantService.getRestaurant(1004L);
+        Restaurant restaurant = restaurantService.getRestaurant(52L);
 
-        assertThat(restaurant.getId(), is(1004L));
+        assertThat(restaurant.getId(), is(52L));
     }
 
     @Test
