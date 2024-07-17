@@ -2,7 +2,6 @@ package kr.co.fastcampus.eatgo.utils;
 
 import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -29,14 +28,14 @@ public class JwtUtilTests {
 
     @Test
     @DisplayName("claims 를 가져오는 테스트")
-    @Disabled
+    // @Disabled
     public void getClaims() {
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEwMDQsIm5pY2tuYW1lIjoiSm9obiJ9.eTVRsy7AkkWHQ-BLbrebFUiOetWAXw1aqT7ezsFm0y";
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsIm5pY2tuYW1lIjoidGVzdGVyMTEifQ.O59d2_9fj_I78G3rrLCJdb3Caqx5zh-WJIv7OInIM_0";
 
         Claims claims = jwtUtil.getClaims(token);
 
-        assertThat(claims.get("userId", Long.class)).isEqualTo(1004L);
-        assertThat(claims.get("name")).isEqualTo("John");
+        assertThat(claims.get("userId", Long.class)).isEqualTo(1L);
+        assertThat(claims.get("nickname")).isEqualTo("tester11");
 
     }
 }
