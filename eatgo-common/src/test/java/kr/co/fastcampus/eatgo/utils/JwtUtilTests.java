@@ -22,7 +22,7 @@ public class JwtUtilTests {
     @Test
     @DisplayName("토큰을 생성하는 테스트")
     public void createToken() {
-        String token = jwtUtil.createToken(1004L, "John");
+        String token = jwtUtil.createToken(1004L, "John", null);
 
         assertThat(token).contains(".");
     }

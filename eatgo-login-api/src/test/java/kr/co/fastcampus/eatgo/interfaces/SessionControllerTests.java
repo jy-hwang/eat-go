@@ -38,7 +38,7 @@ public class SessionControllerTests {
     private JwtUtil jwtUtil;
 
     @Test
-    @DisplayName("세션 테스트 요청")
+    @DisplayName("세션 성공 테스트 요청 - 올바른 정보, 기본 유저")
     @WithMockUser
     public void createWithValidAttributes() throws Exception {
         Long id = 1004L;
@@ -46,10 +46,42 @@ public class SessionControllerTests {
         String password = "test";
         String nickname = "Tester";
 
-        User mockUser = User.builder().id(id).nickname(nickname).build();
+        User mockUser = User.builder().id(id).nickname(nickname).level(1L).build();
 
         given(userService.authenticate(email, password)).willReturn(mockUser);
-        given(jwtUtil.createToken(id, nickname)).willReturn(("header.payload.signature"));
+        given(jwtUtil.createToken(id, nickname, null)).willReturn(("header.payload.signature"));
+
+        mvc.perform(post("/session")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\": \"tester@example.com\",\"password\":\"test\"}")
+                        .with(csrf()))  // CSRF 토큰 추가
+                .andExpect(status().isCreated())
+                .andExpect(header().string("location", "/session"))
+                .andExpect(content().string(containsString("{\"accessToken\":\"")));
+
+        verify(userService).authenticate(eq(email), eq(password));
+    }
+
+
+    @Test
+    @DisplayName("세션 성공 테스트 요청 - 올바른 정보, 가게 소유주")
+    @WithMockUser
+    public void createRestaurantOwner() throws Exception {
+        Long id = 1004L;
+        String email = "tester@example.com";
+        String password = "test";
+        String nickname = "Tester";
+
+        User mockUser
+                = User.builder()
+                .id(id)
+                .nickname(nickname)
+                .level(50L)
+                .restaurantId(369L)
+                .build();
+
+        given(userService.authenticate(email, password)).willReturn(mockUser);
+        given(jwtUtil.createToken(id, nickname, 369L)).willReturn(("header.payload.signature"));
 
         mvc.perform(post("/session")
                         .contentType(MediaType.APPLICATION_JSON)
