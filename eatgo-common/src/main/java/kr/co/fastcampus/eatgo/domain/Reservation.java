@@ -19,7 +19,7 @@ public class Reservation {
     @GeneratedValue
     private Long id;
 
-    private Long reservationId;
+    private Long restaurantId;
 
     private Long userId;
 

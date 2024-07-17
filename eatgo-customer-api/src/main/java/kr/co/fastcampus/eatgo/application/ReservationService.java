@@ -21,7 +21,7 @@ public class ReservationService {
 
         Reservation reservation =
                 Reservation.builder()
-                        .reservationId(restaurantId)
+                        .restaurantId(restaurantId)
                         .userId(userId)
                         .nickname(nickname)
                         .date(date)
