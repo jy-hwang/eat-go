@@ -1,6 +1,5 @@
 package kr.co.fastcampus.eatgo.application;
 
-import kr.co.fastcampus.eatgo.domain.Review;
 import kr.co.fastcampus.eatgo.domain.ReviewRepository;
 import kr.co.fastcampus.eatgo.util.LoggingTestWatcher;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +30,7 @@ public class ReviewServiceTests {
     @Test
     @DisplayName("리뷰 작성 테스트")
     public void addReview() {
-        reviewService.addReview(1004L, "jyhwang", 4.0,"good");
+        reviewService.addReview(1004L, "jyhwang", 4.0, "good");
 
         verify(reviewRepository).save(any());
     }

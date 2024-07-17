@@ -34,7 +34,7 @@ public class SessionController {
         String accessToken = jwtUtil.createToken(
                 user.getId(),
                 user.getNickname(),
-                user.isRestaurantOwner() ? user.getRestaurantId() :  null
+                user.isRestaurantOwner() ? user.getRestaurantId() : null
         );
 
         return ResponseEntity.created(new URI(url))

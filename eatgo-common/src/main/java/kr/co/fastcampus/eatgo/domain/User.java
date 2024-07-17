@@ -53,7 +53,7 @@ public class User {
         return level == 50L;
     }
 
-    public void setRestaurantId(Long restaurantId){
+    public void setRestaurantId(Long restaurantId) {
         this.level = 50L;
         this.restaurantId = restaurantId;
     }

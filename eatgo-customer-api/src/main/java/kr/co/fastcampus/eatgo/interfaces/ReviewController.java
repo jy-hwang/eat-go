@@ -27,7 +27,7 @@ public class ReviewController {
     @PostMapping
     public ResponseEntity<?> create(
             @AuthenticationPrincipal CustomPrincipal principal,
-            @PathVariable("restaurantId") Long restaurantId,
+            @PathVariable Long restaurantId,
             @Valid @RequestBody Review resource) throws URISyntaxException {
         String nickname = principal.nickname();
         Double score = resource.getScore();
