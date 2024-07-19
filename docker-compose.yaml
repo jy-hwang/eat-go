@@ -1,0 +1,100 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:latest
+#    env_file: .env
+    environment:
+      POSTGRES_USER: eatgo
+      POSTGRES_PASSWORD: 11
+      POSTGRES_DB: eatgo
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "15432:5432"
+  admin-api:
+    image: openjdk:17
+    env_file: .env
+    volumes:
+      - ./run.sh:/home/eatgo/run.sh
+      - ./eatgo-admin-api/build/libs:/home/eatgo/libs
+    ports:
+      - "6060:6060"
+    depends_on:
+      - postgres
+    command: bash -c "cd /home/eatgo && sh run.sh"
+  customer-api:
+    image: openjdk:17
+    env_file: .env
+    volumes:
+      - ./run.sh:/home/eatgo/run.sh
+      - ./eatgo-customer-api/build/libs:/home/eatgo/libs
+    ports:
+      - "6065:6065"
+    depends_on:
+      - postgres
+    command: bash -c "cd /home/eatgo && sh run.sh"
+  login-api:
+    image: openjdk:17
+    env_file: .env
+    volumes:
+      - ./run.sh:/home/eatgo/run.sh
+      - ./eatgo-login-api/build/libs:/home/eatgo/libs
+    ports:
+      - "6075:6075"
+    depends_on:
+      - postgres
+    command: bash -c "cd /home/eatgo && sh run.sh"
+  restaurant-api:
+    image: openjdk:17
+    env_file: .env
+    volumes:
+      - ./run.sh:/home/eatgo/run.sh
+      - ./eatgo-restaurant-api/build/libs:/home/eatgo/libs
+    ports:
+      - "6080:6080"
+    depends_on:
+      - postgres
+    command: bash -c "cd /home/eatgo && sh run.sh"
+  admin-web:
+    image: node:latest
+    volumes:
+      - ./eatgo-admin-web:/home/eatgo
+    ports:
+      - "6061:6061"
+    environment:
+      - VUE_APP_API_BASE_URL=http://localhost:8002
+      - VUE_APP_LOGIN_API_BASE_URL=http://localhost:8001
+    command: bash -c "cd /home/eatgo && npm run serve"
+    healthcheck:
+      test: curl -sS http://localhost:8080 || exit 1
+      timeout: 10s
+      retries: 10
+  customer-web:
+    image: node:latest
+    volumes:
+      - ./eatgo-customer-web:/home/eatgo
+    ports:
+      - "6071:6071"
+    environment:
+      - VUE_APP_API_BASE_URL=http://localhost:8003
+      - VUE_APP_LOGIN_API_BASE_URL=http://localhost:8001
+    command: bash -c "cd /home/eatgo && npm run serve"
+    healthcheck:
+      test: curl -sS http://localhost:8080 || exit 1
+      timeout: 10s
+      retries: 10
+  restaurant-web:
+    image: node:latest
+    volumes:
+      - ./eatgo-restaurant-web:/home/eatgo
+    ports:
+      - "6081:6081"
+    environment:
+      - VUE_APP_API_BASE_URL=http://localhost:8004
+      - VUE_APP_LOGIN_API_BASE_URL=http://localhost:8001
+    command: bash -c "cd /home/eatgo && npm run serve"
+    healthcheck:
+      test: curl -sS http://localhost:8080 || exit 1
+      timeout: 10s
+      retries: 10
+
