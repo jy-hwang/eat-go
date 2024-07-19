@@ -20,8 +20,6 @@ public class CategoryService {
     public List<Category> getCategories() {
         List<Category> categories = categoryRepository.findAll();
 
-        categories.add(Category.builder().name("Korean Food").build());
-
         return categories;
     }
 
