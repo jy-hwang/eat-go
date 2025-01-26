@@ -47,6 +47,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             if (claims != null) {
                 Long userId = claims.get("userId", Long.class);
                 String nickname = claims.get("nickname", String.class);
+                String role = claims.get("role", String.class);
                 if (userId != null && nickname != null) {
                     CustomPrincipal principal = new CustomPrincipal(userId, nickname);
                     UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(

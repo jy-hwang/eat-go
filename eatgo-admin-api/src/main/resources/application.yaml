@@ -1,8 +1,6 @@
 spring:
   application:
     name: eatgo-admin
-  datasource:
-    url: ${H2_REAL_URL}
   jpa:
     hibernate:
       ddl-auto: update
@@ -27,7 +25,6 @@ spring:
   config:
     activate:
       on-profile: test
-
 ---
 spring:
   jpa:
@@ -43,5 +40,5 @@ spring:
     driver-class-name: org.postgresql.Driver
   config:
     activate:
-      on-profile: postgres
+      on-profile: local
 

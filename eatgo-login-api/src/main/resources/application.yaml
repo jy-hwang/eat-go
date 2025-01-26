@@ -3,8 +3,6 @@ spring:
     allow-circular-references: true
   application:
     name: eatgo-login
-  datasource:
-    url: ${H2_REAL_URL}
   jpa:
     hibernate:
       ddl-auto: update
@@ -48,5 +46,5 @@ spring:
     driver-class-name: org.postgresql.Driver
   config:
     activate:
-      on-profile: postgres
+      on-profile: local
 

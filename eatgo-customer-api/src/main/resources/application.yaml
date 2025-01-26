@@ -3,8 +3,6 @@ spring:
     allow-circular-references: true
   application:
     name: eatgo-customer
-  datasource:
-    url: ${H2_REAL_URL}
   jpa:
     hibernate:
       ddl-auto: update
